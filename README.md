@@ -20,6 +20,8 @@ How to execute update_db.sh:
 
 `./update_db.sh server.db`
 
+After modifying the SQL schema or queries, you must run `sqlc generate` to regenerate all of the database-related Go code.
+
 ## Support
 - Drummania 7th Mix
 - Drummania 7th Mix Power-Up Version
