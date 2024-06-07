@@ -1,0 +1,49 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries: "services/core/sql/queries"
+    schema: "services/core/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/core/db"
+
+  - engine: "sqlite"
+    queries: "services/gf11/sql/queries"
+    schema: "services/gf11/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/gf11/db"
+
+  - engine: "sqlite"
+    queries: "services/gf10/sql/queries"
+    schema: "services/gf10/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/gf10/db"
+
+  - engine: "sqlite"
+    queries: "services/gf9/sql/queries"
+    schema: "services/gf9/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/gf9/db"
+
+  - engine: "sqlite"
+    queries: "services/gf8puv/sql/queries"
+    schema: "services/gf8puv/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/gf8puv/db"
+
+  - engine: "sqlite"
+    queries: "services/gf8/sql/queries"
+    schema: "services/gf8/sql/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "services/gf8/db"
