@@ -1,10 +1,11 @@
 server:
-  host: "10.1.1.24"
+  host: "127.0.0.1"
+  services_host: "10.1.1.24" # Used to make URLs for services.get endpoint
   port: 80
   logging: True
 
 database:
-  driver: "sqlite3"
+  driver: "sqlite"
   datasource: "server.db"
   # datasource: ":memory:" # In-memory database (resets on server restart)
 
@@ -13,8 +14,8 @@ eemall_shopserver:
 
 static:
   expose_folders: false # If true then the a datapath without a filelist can be exposed (not recommended but useful for testing)
-  folder:
-      -
-        path: "/"
-        filelist: "static.json"
-        datapath: "updates"
+  # folder:
+  #     -
+  #       path: "/"
+  #       filelist: "static.json"
+  #       datapath: "updates"

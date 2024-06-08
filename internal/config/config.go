@@ -10,9 +10,12 @@ import (
 
 type Config struct {
 	Server struct {
-		Host    string `yaml:"host"`
-		Port    int    `yaml:"port"`
-		Logging bool   `yaml:"logging"`
+		Host string `yaml:"host"`
+		Port int    `yaml:"port"`
+
+		ServicesUrl string `yaml:"services_url"`
+
+		Logging bool `yaml:"logging"`
 	} `yaml:"server"`
 
 	Database struct {
@@ -36,7 +39,7 @@ type Config struct {
 }
 
 func (c *Config) MakeUrl(path string) string {
-	u, err := url.JoinPath(fmt.Sprintf("http://%s", c.Server.Host), path)
+	u, err := url.JoinPath(fmt.Sprintf("http://%s", c.Server.ServicesUrl), path)
 
 	if err != nil {
 		return path

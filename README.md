@@ -8,7 +8,9 @@ Performance and security was not a focus during development so it is not recomme
 ## Running
 Modify `config.yml` as required for your setup.
 
-Run `go run cmd/main.go` from the repository folder.
+Run `go run main.go` from the repository folder to run from source code.
+
+Alternatively, if you are using a pre-built executable from the Releases tab, then run the eamold-(platform)-(arch) executable directly.
 
 ## Database management
 
@@ -40,7 +42,7 @@ NOTE: Skill point-based song unlocks are saved on the player's magnetic game car
 
 ## Design
 
-Main entry point of the server is `cmd/main.go`. All services must be registered using `manager.RegisterService()` here to be exposed through the HTTP server.
+Main entry point of the server is `main.go`. All services must be registered using `manager.RegisterService()` here to be exposed through the HTTP server.
 
 The `services` folder is where the main logic for the server lives. Each service has a `service.go` file which implements the `Service` interface that allows it to be registered as a service in the service manager. Within that is the list of modules that each service actually exposes through `services.get`. There's a way to resolve common shared modules from the core service for the common things like `pcbtracker`, `posevent`, etc. Each service thne implements any additional modules within its own service folder, including any database-related schemas and queries.
 

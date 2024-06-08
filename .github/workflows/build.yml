@@ -1,0 +1,98 @@
+name: Go
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goosarch:
+          - 'darwin/amd64'
+          - 'darwin/arm64'
+          - 'linux/amd64'
+          - 'linux/arm64'
+          - 'windows/amd64'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ariga/setup-atlas@v0
+      - uses: sqlc-dev/setup-sqlc@v4
+        with:
+          sqlc-version: '1.26.0'
+
+      - name: Set up Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.x'
+
+      - name: Install dependencies
+        run: |
+          go get .
+
+      - name: Get OS and arch info
+        run: |
+          GOOSARCH=${{matrix.goosarch}}
+          GOOS=${GOOSARCH%/*}
+          GOARCH=${GOOSARCH#*/}
+          GOEXT=$(if [ "$GOOS" = "windows" ]; then echo ".exe"; else echo ""; fi)
+          REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
+          BINARY_NAME=$REPOSITORY_NAME-$GOOS-$GOARCH$GOEXT
+          ARTIFACT_NAME=$REPOSITORY_NAME-$GOOS-$GOARCH-$GITHUB_SHA
+          ARCHIVE_NAME=$ARTIFACT_NAME.zip
+          echo "BINARY_NAME=$BINARY_NAME" >> $GITHUB_ENV
+          echo "GOOS=$GOOS" >> $GITHUB_ENV
+          echo "GOARCH=$GOARCH" >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+          echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
+
+      - name: Build SQL
+        run: |
+          sqlc generate
+
+      - name: Build
+        run: |
+          go build -o "dist/$BINARY_NAME" -v
+
+      - name: Prepare SQLite database
+        run: ./update_db.sh dist/server.db
+
+      - name: Prepare dist folder
+        run: |
+          cp config.yml dist
+          cp LICENSE dist
+          cp -r updates dist
+
+      - name: Create dist archive
+        run: zip -r /tmp/${{ env.ARCHIVE_NAME }} .
+        working-directory: dist
+
+      - name: Archive release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: /tmp/${{ env.ARCHIVE_NAME }}
+
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download run artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ github.sha }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: /tmp/artifacts/**/*

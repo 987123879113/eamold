@@ -14,7 +14,7 @@ import (
 	"path"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -81,7 +81,8 @@ func main() {
 		if folder.FileList != nil {
 			jsonFile, err := os.Open(*folder.FileList)
 			if err != nil {
-				panic(err)
+				log.Printf("Could not open file list: %v", err)
+				continue
 			}
 
 			jsonBytes, err := io.ReadAll(jsonFile)
@@ -127,8 +128,8 @@ func main() {
 	defer stop()
 	// Start server
 	go func() {
-		if err := e.Start(fmt.Sprintf(":%d", config.Server.Port)); err != nil && err != http.ErrServerClosed {
-			e.Logger.Fatal("shutting down the server")
+		if err := e.Start(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)); err != nil && err != http.ErrServerClosed {
+			e.Logger.Fatal(fmt.Errorf("shutting down the server: %v", err))
 		}
 	}()
 
