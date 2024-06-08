@@ -84,6 +84,8 @@ FROM (
     FROM gf8dm7puv_scores
     WHERE cardid = ?
     AND game_type = ?
+    AND skill > 0
+    AND clear > 0
     ORDER BY score DESC
     LIMIT 30
 ) AS t
@@ -106,6 +108,8 @@ SELECT musicid
 FROM gf8dm7puv_scores
 WHERE cardid = ?
 AND game_type = ?
+AND skill > 0
+AND clear > 0
 ORDER BY score DESC
 LIMIT ?
 `

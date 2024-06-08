@@ -72,6 +72,8 @@ FROM gf11dm10_scores
 WHERE gdid = ?
 AND game_type = ?
 AND netid != -1
+AND skill > 0
+AND clear > 0
 GROUP BY gdid, netid, seq_mode;
 
 -- name: GetAllMaxSkillPointsByGdid :many
@@ -80,6 +82,8 @@ FROM gf11dm10_scores
 WHERE gdid = ?
 AND game_type = ?
 AND netid != -1
+AND skill > 0
+AND clear > 0
 GROUP BY gdid, netid;
 
 -- name: GetFavorites :many

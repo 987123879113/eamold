@@ -15,6 +15,8 @@ FROM gf10dm9_scores
 WHERE cardid = ?
 AND game_type = ?
 AND netid != -1
+AND skill > 0
+AND clear > 0
 GROUP BY cardid, netid
 `
 
@@ -331,6 +333,8 @@ FROM gf10dm9_scores
 WHERE cardid = ?
 AND game_type = ?
 AND netid != -1
+AND skill > 0
+AND clear > 0
 GROUP BY cardid, netid, seq_mode
 `
 

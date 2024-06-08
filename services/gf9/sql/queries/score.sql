@@ -82,4 +82,6 @@ FROM gf9dm8_scores
 WHERE cardid = ?
 AND game_type = ?
 AND music_num != -1
+AND skill > 0
+AND clear > 0
 GROUP BY cardid, music_num;
