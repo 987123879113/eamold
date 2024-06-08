@@ -199,7 +199,7 @@ const upsertPuzzle = `-- name: UpsertPuzzle :exec
 INSERT INTO gf11dm10_puzzle
 (game_type, gdid, puzzle_no, flags, hidden)
 VALUES (?1, ?2, ?3, ?4, ?5)
-ON CONFLICT (gdid, puzzle_no) DO
+ON CONFLICT (game_type, gdid, puzzle_no) DO
 UPDATE SET flags=?4, hidden=?5
 `
 

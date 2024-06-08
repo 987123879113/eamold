@@ -24,7 +24,7 @@ CREATE TABLE gf11dm10_puzzle (
     flags INTEGER NOT NULL,
     hidden INTEGER NOT NULL,
 
-    PRIMARY KEY(game_type, gdid)
+    PRIMARY KEY(game_type, gdid, puzzle_no)
 );
 
 CREATE TABLE gf11dm10_lands (

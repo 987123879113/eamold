@@ -22,7 +22,7 @@ CREATE TABLE gf10dm9_puzzle (
     flags INTEGER NOT NULL,
     hidden INTEGER NOT NULL,
 
-    PRIMARY KEY(game_type, cardid)
+    PRIMARY KEY(game_type, cardid, puzzle_no)
 );
 
 CREATE TABLE gf10dm9_scores (

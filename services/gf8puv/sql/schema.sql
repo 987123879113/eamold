@@ -20,7 +20,7 @@ CREATE TABLE gf8dm7puv_puzzles (
     flags INTEGER NOT NULL,
     out INTEGER NOT NULL,
 
-    PRIMARY KEY(game_type, cardid)
+    PRIMARY KEY(game_type, cardid, number)
 );
 
 CREATE TABLE gf8dm7puv_favorites (

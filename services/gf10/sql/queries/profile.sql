@@ -34,5 +34,5 @@ AND puzzle_no = ?;
 INSERT INTO gf10dm9_puzzle
 (game_type, cardid, puzzle_no, flags, hidden)
 VALUES (?1, ?2, ?3, ?4, ?5)
-ON CONFLICT (cardid, puzzle_no) DO
+ON CONFLICT (game_type, cardid, puzzle_no) DO
 UPDATE SET flags=?4, hidden=?5;

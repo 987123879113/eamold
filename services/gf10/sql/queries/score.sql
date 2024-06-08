@@ -139,7 +139,7 @@ WHERE points > (
 INSERT INTO gf10dm9_shops
 (game_type, sid, pref, name, points)
 VALUES (?1, ?2, ?3, ?4, ?5)
-ON CONFLICT (sid) DO
+ON CONFLICT (game_type, sid) DO
 UPDATE SET points=points + ?5;
 
 -- name: GetCourseTotalPlayCount :one
@@ -177,5 +177,5 @@ WHERE cardid = ?;
 INSERT INTO gf10dm9_shops
 (game_type, sid, pref, name, points)
 VALUES (?1, ?2, ?3, ?4, ?5)
-ON CONFLICT (sid) DO
+ON CONFLICT (game_type, sid) DO
 UPDATE SET points=points + ?5;

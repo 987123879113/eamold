@@ -70,5 +70,5 @@ INSERT INTO gf8dm7puv_shop_machines
 (game_type, pcbid, name, pref)
 VALUES
 (?1, ?2, ?3, ?4)
-ON CONFLICT(pcbid) DO
+ON CONFLICT(game_type, pcbid) DO
 UPDATE SET name = ?3, pref = ?4;
