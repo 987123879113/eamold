@@ -13,7 +13,7 @@ type Config struct {
 		Host string `yaml:"host"`
 		Port int    `yaml:"port"`
 
-		ServicesUrl string `yaml:"services_url"`
+		ServicesUrl string `yaml:"services_host"`
 
 		Logging bool `yaml:"logging"`
 	} `yaml:"server"`
