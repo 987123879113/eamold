@@ -280,6 +280,57 @@ func (m *moduleLocal) gamedata_dataget(elm internal_models.MethodXmlElement) (an
 }
 
 func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (any, error) {
+	/*
+		EX Challenge info
+		https://web.archive.org/web/20040810043410fw_/http://www.konami.co.jp/am/gfdm/gf10dm9/howto/index.html
+		https://plaza.rakuten.co.jp/thm/42652/
+		https://nickjager.hatenablog.com/entry/20121202/1354441854
+
+		#1: Clear a song with an S rank or better while getting a full combo
+		DM: 24000 available, GF: 16000 available
+		Date: 2003/10/22 to 2003/11/4
+		Date: 2003/11/28 to 2003/12/4
+
+		#2: Clear a song that is level 40 or higher with a combo of 300 or higher
+		DM: 20000 available, GF: 12000 available
+		Date: 2003/11/5 to 2003/11/16
+		Date: 2003/12/18 to 2003/12/23
+
+		#3: Clear a song that is level 40 or higher with less than 10 (for DM)/20 (for GF) misses
+		DM: 12000 available, GF: 6000 available
+		Date: 2003/11/17 to 2003/12/4
+
+		#4: Clear a song on Extreme difficulty in Extra mode with a full combo
+		DM: 10000 available, GF: 5000 available
+		Date: 2003/12/5 to 2003/12/17
+
+		#5: Clear a song that is level 70 or higher with 700 (for DM)/350 (for GF) or more perfects
+		DM: 9000 available?, GF: 4500 available?
+		Date: 2003/12/24 to 2004/1/4
+
+		#6: Clear a song that is level 65 or higher with an SS
+		DM: 8000 available, GF: 4000 available?
+		Date: 2004/1/11 to 2004/1/21
+		Date: 2004/2/24 to 2004/3/?
+
+		#7: Clear a song that is level 75 (for DM)/level 70 (for GF) or higher with less than 10 (for DM)/20 (for GF) misses
+		DM: 4000 available, GF: 2000 available
+		Date: 2004/1/27 to 2004/2/7
+
+		#8: Clear Agnus Dei on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+		DM: 3000 available, GF: 1500 available
+		Date: 2004/2/13 to 2004/2/23
+		Date: 2004/3/31 to 2004/4/4
+
+		#9: Clear MODEL DD5 on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+		DM: 1500 available, GF: 750 available
+		Date: 2004/2/29 to 2004/3/11
+
+		#10: Clear Timepiece Phase II on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+		DM: 750 available??, GF: 375 available??
+		Date: 2004/?/? to 2004/4/21
+	*/
+
 	var request models.Request_GameData_GameTop
 
 	if err := utils.UnserializeEtreeElement(elm.Element, &request); err != nil {
