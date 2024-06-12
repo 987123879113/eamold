@@ -6,6 +6,7 @@ import (
 	"eamold/internal/models"
 	"eamold/internal/services_manager"
 	"eamold/services/core"
+	core_modules "eamold/services/core/modules"
 	"eamold/services/gf10/db"
 	"eamold/services/gf10/modules"
 	"eamold/services/gf10/providers"
@@ -51,6 +52,8 @@ func New(manager services_manager.ServicesManager, conn *sql.DB, eemallShopServe
 			"eemall2": modules.NewModuleEemall2(db, GAME_TYPE),
 
 			"local": modules.NewModuleLocal(db, GAME_TYPE),
+
+			"keepalive": core_modules.NewModuleConstant("keepalive", "pa=127.0.0.1&ga=127.0.0.1&ping=ping://127.0.0.1&ntp=ntp://162.159.200.123"),
 		},
 	}
 }
