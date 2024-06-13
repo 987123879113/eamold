@@ -274,7 +274,7 @@ func (m *moduleLocal) gamedata_dataget(elm internal_models.MethodXmlElement) (an
 			},
 		},
 		IR: models.Response_GameData_DataGet_IR{
-			Round: 1,
+			Round: 10,
 		},
 	}, nil
 }
@@ -285,51 +285,177 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 		https://web.archive.org/web/20040810043410fw_/http://www.konami.co.jp/am/gfdm/gf10dm9/howto/index.html
 		https://plaza.rakuten.co.jp/thm/42652/
 		https://nickjager.hatenablog.com/entry/20121202/1354441854
-
-		#1: Clear a song with an S rank or better while getting a full combo
-		DM: 24000 available, GF: 16000 available
-		Date: 2003/10/22 to 2003/11/4
-		Date: 2003/11/28 to 2003/12/4
-
-		#2: Clear a song that is level 40 or higher with a combo of 300 or higher
-		DM: 20000 available, GF: 12000 available
-		Date: 2003/11/5 to 2003/11/16
-		Date: 2003/12/18 to 2003/12/23
-
-		#3: Clear a song that is level 40 or higher with less than 10 (for DM)/20 (for GF) misses
-		DM: 12000 available, GF: 6000 available
-		Date: 2003/11/17 to 2003/12/4
-
-		#4: Clear a song on Extreme difficulty in Extra mode with a full combo
-		DM: 10000 available, GF: 5000 available
-		Date: 2003/12/5 to 2003/12/17
-
-		#5: Clear a song that is level 70 or higher with 700 (for DM)/350 (for GF) or more perfects
-		DM: 9000 available?, GF: 4500 available?
-		Date: 2003/12/24 to 2004/1/4
-
-		#6: Clear a song that is level 65 or higher with an SS
-		DM: 8000 available, GF: 4000 available?
-		Date: 2004/1/11 to 2004/1/21
-		Date: 2004/2/24 to 2004/3/?
-
-		#7: Clear a song that is level 75 (for DM)/level 70 (for GF) or higher with less than 10 (for DM)/20 (for GF) misses
-		DM: 4000 available, GF: 2000 available
-		Date: 2004/1/27 to 2004/2/7
-
-		#8: Clear Agnus Dei on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
-		DM: 3000 available, GF: 1500 available
-		Date: 2004/2/13 to 2004/2/23
-		Date: 2004/3/31 to 2004/4/4
-
-		#9: Clear MODEL DD5 on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
-		DM: 1500 available, GF: 750 available
-		Date: 2004/2/29 to 2004/3/11
-
-		#10: Clear Timepiece Phase II on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
-		DM: 750 available??, GF: 375 available??
-		Date: 2004/?/? to 2004/4/21
 	*/
+	exdatas := []models.Response_GameData_GameTop_ExData{
+		{
+			/*
+				#1: Clear a song with an S rank or better while getting a full combo
+				DM: 24000 available, GF: 16000 available
+				Date: 2003/10/22 to 2003/11/4
+				Date: 2003/11/28 to 2003/12/4
+			*/
+			Round:      1,
+			ExId:       0,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndFullCombo(models.ExRankS),
+			Vacant:     []int{16000, 24000}[m.gameType],
+			Open:       2003102200,
+			Close:      2003110400,
+		},
+		{
+			/*
+				#2: Clear a song that is level 40 or higher with a combo of 300 or higher
+				DM: 20000 available, GF: 12000 available
+				Date: 2003/11/5 to 2003/11/16
+				Date: 2003/12/18 to 2003/12/23
+			*/
+			Round:      1,
+			ExId:       1,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndMinCombo(40, 300),
+			Vacant:     []int{12000, 20000}[m.gameType],
+			Open:       2003110500,
+			Close:      2003111600,
+		},
+		{
+			/*
+				#3: Clear a song that is level 40 or higher with less than 10 (for DM)/20 (for GF) misses
+				DM: 12000 available, GF: 6000 available
+				Date: 2003/11/17 to 2003/12/4
+			*/
+			Round:      1,
+			ExId:       2,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndMaxJudgementCount(40, models.ExJudgementMiss, []int{20, 10}[m.gameType]),
+			Vacant:     []int{6000, 12000}[m.gameType],
+			Open:       2003111700,
+			Close:      2003120400,
+		},
+		{
+			/*
+				#4: Clear a song on Extreme difficulty in Extra mode with a full combo
+				DM: 10000 available, GF: 5000 available
+				Date: 2003/12/5 to 2003/12/17
+			*/
+			Round:      1,
+			ExId:       3,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithFullCombo(models.ExStageExtra, models.ExDifficultyExtreme),
+			Vacant:     []int{5000, 10000}[m.gameType],
+			Open:       2003120500,
+			Close:      2003121700,
+		},
+		{
+			/*
+				#5: Clear a song that is level 70 or higher with 700 (for DM)/350 (for GF) or more perfects
+				DM: 9000 available?, GF: 4500 available?
+				Date: 2003/12/24 to 2004/1/4
+			*/
+			Round:      1,
+			ExId:       4,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndMinJudgementCount(70, models.ExJudgementPerfect, []int{350, 700}[m.gameType]),
+			Vacant:     []int{4500, 9000}[m.gameType],
+			Open:       2003122400,
+			Close:      2004010400,
+		},
+		{
+			/*
+				#6: Clear a song that is level 65 or higher with an SS
+				DM: 8000 available, GF: 4000 available?
+				Date: 2004/1/11 to 2004/1/21
+				Date: 2004/2/24 to 2004/3/?
+			*/
+			Round:      1,
+			ExId:       5,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndMinRank(65, models.ExRankSS),
+			Vacant:     []int{4000, 8000}[m.gameType],
+			Open:       2004011100,
+			Close:      2004012100,
+		},
+		{
+			/*
+				#7: Clear a song that is level 75 (for DM)/level 70 (for GF) or higher with less than 10 (for DM)/20 (for GF) misses
+				DM: 4000 available, GF: 2000 available
+				Date: 2004/1/27 to 2004/2/7
+			*/
+			Round:      1,
+			ExId:       6,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeMinLevelAndMaxJudgementCount([]int{70, 75}[m.gameType], models.ExJudgementMiss, []int{20, 10}[m.gameType]),
+			Vacant:     []int{2000, 4000}[m.gameType],
+			Open:       2004012700,
+			Close:      2004020700,
+		},
+		{
+			/*
+				#8: Clear extra stage on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+				DM: 3000 available, GF: 1500 available
+				Date: 2004/2/13 to 2004/2/23
+				Date: 2004/3/31 to 2004/4/4
+			*/
+			Round:      1,
+			ExId:       7,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStageExtra, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
+			Vacant:     []int{1500, 3000}[m.gameType],
+			Open:       2004021300,
+			Close:      2004022300,
+		},
+		{
+			/*
+				#9: Clear encore stage on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+				DM: 1500 available, GF: 750 available
+				Date: 2004/2/29 to 2004/3/11
+			*/
+			Round:      1,
+			ExId:       8,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStageEncore, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
+			Vacant:     []int{750, 1500}[m.gameType],
+			Open:       2004022900,
+			Close:      2004031100,
+		},
+		{
+			/*
+				#10: Clear premium encore stage on Extreme difficulty with 93% (for DM)/95% (for GF) or higher perfects
+				DM: 750 available??, GF: 375 available??
+				Date: 2004/?/? to 2004/4/21
+			*/
+			Round:      1,
+			ExId:       9,
+			Skill:      0,
+			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStagePremiumEncore, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
+			Vacant:     []int{375, 750}[m.gameType], // ?
+			Open:       2004040100,                  // ?
+			Close:      2004042100,
+		},
+	}
+
+	// IR #10 course list
+	// ref: https://plaza.rakuten.co.jp/kisekiyuki/diary/200401220000/
+	// Not sure how accurate this really is but it's better than blank courses in-game
+	ircourses := []models.Response_GameData_GameTop_Player_Course{
+		{
+			Class:    0,
+			MusicIds: utils.GenerateListStringInt64([]int64{934, 922, 827, 910}),
+			Seqs:     utils.GenerateListStringInt64([]int64{0, 0, 0, 0}),
+			Diffs:    utils.GenerateListStringInt64([]int64{1, 2, 3, 4}),
+		},
+		{
+			Class:    1,
+			MusicIds: utils.GenerateListStringInt64([]int64{921, 913, 932, 510}),
+			Seqs:     utils.GenerateListStringInt64([]int64{1, 1, 1, 1}),
+			Diffs:    utils.GenerateListStringInt64([]int64{1, 2, 3, 4}),
+		},
+		{
+			Class:    2,
+			MusicIds: utils.GenerateListStringInt64([]int64{928, 15, 504, 619}),
+			Seqs:     utils.GenerateListStringInt64([]int64{1, 2, 0, 1}),
+			Diffs:    utils.GenerateListStringInt64([]int64{1, 2, 3, 4}),
+		},
+	}
 
 	var request models.Request_GameData_GameTop
 
@@ -408,12 +534,17 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 				SkillPercs: skillPercs,
 
 				Ex: models.Response_GameData_GameTop_Player_Ex{
-					New: 1,
+					// If this is set to 1 then the player is forced into the EX challenge screen every game start.
+					// There should ideally be a table that tracks what EX challenges have been presented already,
+					// and and the EX challenge progress also needs to be tracked somewhere (checks in gameend?)
+					New: 0,
 				},
 
 				Ir: models.Response_GameData_GameTop_Player_IR{
-					New: 1,
+					New: 0, // Same for this
 				},
+
+				Course: ircourses,
 			}
 		} else {
 			players[playerIdx] = models.Response_GameData_GameTop_Player{
@@ -435,6 +566,8 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 		},
 
 		Players: players,
+
+		ExData: exdatas,
 	}, nil
 }
 

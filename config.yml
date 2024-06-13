@@ -1,5 +1,5 @@
 server:
-  host: "127.0.0.1"
+  host: "0.0.0.0" # Set to 127.0.0.1 to make available only on your own computer
   port: 80
   services_host: "10.1.1.24" # Used to make URLs for services.get endpoint, include port here if required
   logging: False # Save network request and responses to the output folder
