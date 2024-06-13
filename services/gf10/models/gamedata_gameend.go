@@ -90,7 +90,7 @@ type Request_GameData_GameEnd struct {
 			} `xml:"stage"`
 		} `xml:"play"`
 
-		Ex struct {
+		Ex *struct {
 			Round int `xml:"round,attr"`
 			ExId  int `xml:"exid,attr"`
 			Seen  int `xml:"seen,attr"`
@@ -126,6 +126,7 @@ type Response_GameData_GameEnd_Player struct {
 	SkillOrder   int                                      `xml:"skill_order,attr"`
 	SkillOrderNr int                                      `xml:"skill_order_nr,attr"`
 	Stages       []Response_GameData_GameEnd_Player_Stage `xml:"stage"`
+	Ex           Response_GameData_GameEnd_ExData_Ex      `xml:"ex"`
 }
 
 type Response_GameData_GameEnd_ExData_Ex struct {
@@ -133,8 +134,7 @@ type Response_GameData_GameEnd_ExData_Ex struct {
 }
 
 type Response_GameData_GameEnd_ExData struct {
-	Vacant int                                 `xml:"vacant,attr"`
-	Ex     Response_GameData_GameEnd_ExData_Ex `xml:"ex"`
+	Vacant int `xml:"vacant,attr"`
 }
 
 type Response_GameData_GameEnd_ShopRank struct {

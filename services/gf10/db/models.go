@@ -16,6 +16,15 @@ type Gf10dm9CardProfile struct {
 	Expired    int64
 }
 
+type Gf10dm9ExProgress struct {
+	GameType int64
+	Cardid   string
+	Exid     int64
+	Clear    int64
+	Seen     int64
+	Serial   int64
+}
+
 type Gf10dm9Puzzle struct {
 	GameType int64
 	Cardid   string

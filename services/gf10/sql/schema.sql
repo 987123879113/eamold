@@ -54,3 +54,15 @@ CREATE TABLE gf10dm9_shops (
     PRIMARY KEY (game_type, sid)
 );
 
+CREATE TABLE gf10dm9_ex_progress (
+    game_type INTEGER NOT NULL,
+    cardid TEXT NOT NULL,
+    exid INTEGER NOT NULL,
+
+    clear INTEGER NOT NULL DEFAULT 0,
+    seen INTEGER NOT NULL DEFAULT 0,
+
+    serial INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (game_type, cardid, exid)
+);

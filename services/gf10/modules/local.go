@@ -279,13 +279,23 @@ func (m *moduleLocal) gamedata_dataget(elm internal_models.MethodXmlElement) (an
 	}, nil
 }
 
-func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (any, error) {
+func (m *moduleLocal) getExChallengeDatas(cardIds []string) ([]models.Response_GameData_GameTop_ExData, error) {
 	/*
 		EX Challenge info
 		https://web.archive.org/web/20040810043410fw_/http://www.konami.co.jp/am/gfdm/gf10dm9/howto/index.html
 		https://plaza.rakuten.co.jp/thm/42652/
 		https://nickjager.hatenablog.com/entry/20121202/1354441854
 	*/
+	exChallengeClearCounts, err := m.db.GetExChallengeClearCounts(context.TODO(), m.gameType)
+	if err != nil {
+		return nil, err
+	}
+
+	exChallengeClearCountMap := make([]int, 10)
+	for _, v := range exChallengeClearCounts {
+		exChallengeClearCountMap[v.Exid] = int(v.ClearCount)
+	}
+
 	exdatas := []models.Response_GameData_GameTop_ExData{
 		{
 			/*
@@ -298,7 +308,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       0,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndFullCombo(models.ExRankS),
-			Vacant:     []int{16000, 24000}[m.gameType],
+			Vacant:     []int{16000, 24000}[m.gameType] - exChallengeClearCountMap[0],
 			Open:       2003102200,
 			Close:      2003110400,
 		},
@@ -313,7 +323,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       1,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndMinCombo(40, 300),
-			Vacant:     []int{12000, 20000}[m.gameType],
+			Vacant:     []int{12000, 20000}[m.gameType] - exChallengeClearCountMap[1],
 			Open:       2003110500,
 			Close:      2003111600,
 		},
@@ -327,7 +337,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       2,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndMaxJudgementCount(40, models.ExJudgementMiss, []int{20, 10}[m.gameType]),
-			Vacant:     []int{6000, 12000}[m.gameType],
+			Vacant:     []int{6000, 12000}[m.gameType] - exChallengeClearCountMap[2],
 			Open:       2003111700,
 			Close:      2003120400,
 		},
@@ -341,7 +351,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       3,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithFullCombo(models.ExStageExtra, models.ExDifficultyExtreme),
-			Vacant:     []int{5000, 10000}[m.gameType],
+			Vacant:     []int{5000, 10000}[m.gameType] - exChallengeClearCountMap[3],
 			Open:       2003120500,
 			Close:      2003121700,
 		},
@@ -355,7 +365,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       4,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndMinJudgementCount(70, models.ExJudgementPerfect, []int{350, 700}[m.gameType]),
-			Vacant:     []int{4500, 9000}[m.gameType],
+			Vacant:     []int{4500, 9000}[m.gameType] - exChallengeClearCountMap[4],
 			Open:       2003122400,
 			Close:      2004010400,
 		},
@@ -370,7 +380,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       5,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndMinRank(65, models.ExRankSS),
-			Vacant:     []int{4000, 8000}[m.gameType],
+			Vacant:     []int{4000, 8000}[m.gameType] - exChallengeClearCountMap[5],
 			Open:       2004011100,
 			Close:      2004012100,
 		},
@@ -384,7 +394,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       6,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeMinLevelAndMaxJudgementCount([]int{70, 75}[m.gameType], models.ExJudgementMiss, []int{20, 10}[m.gameType]),
-			Vacant:     []int{2000, 4000}[m.gameType],
+			Vacant:     []int{2000, 4000}[m.gameType] - exChallengeClearCountMap[6],
 			Open:       2004012700,
 			Close:      2004020700,
 		},
@@ -399,7 +409,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       7,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStageExtra, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
-			Vacant:     []int{1500, 3000}[m.gameType],
+			Vacant:     []int{1500, 3000}[m.gameType] - exChallengeClearCountMap[7],
 			Open:       2004021300,
 			Close:      2004022300,
 		},
@@ -413,7 +423,7 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       8,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStageEncore, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
-			Vacant:     []int{750, 1500}[m.gameType],
+			Vacant:     []int{750, 1500}[m.gameType] - exChallengeClearCountMap[8],
 			Open:       2004022900,
 			Close:      2004031100,
 		},
@@ -427,12 +437,61 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 			ExId:       9,
 			Skill:      0,
 			Parameters: models.NewExDataChallengeOnStageAndDifficultyWithMinPercent(models.ExStagePremiumEncore, models.ExDifficultyExtreme, []int{95, 93}[m.gameType]),
-			Vacant:     []int{375, 750}[m.gameType], // ?
-			Open:       2004040100,                  // ?
+			Vacant:     []int{375, 750}[m.gameType] - exChallengeClearCountMap[9], // ?
+			Open:       2004040100,                                                // ?
 			Close:      2004042100,
 		},
 	}
 
+	// This is something custom for this server. The server will give all players the first ex challenge that hasn't been completed betwen the two players.
+	// This event was originally a time-based event so all players always saw the same challenges, but that's not practical for a local server so this
+	// solution was implemented.
+
+	minExChallenge := 0
+
+	if len(cardIds) > 0 {
+		exChallengeClearMapTotal := make(map[int64]int64, 10)
+		for i := range 10 {
+			exChallengeClearMapTotal[int64(i)] = -1
+		}
+
+		for _, cardid := range cardIds {
+			exChallengeProgress, err := m.db.GetExChallengeProgress(context.TODO(), db.GetExChallengeProgressParams{
+				GameType: m.gameType,
+				Cardid:   cardid,
+			})
+			if err != nil {
+				return nil, err
+			}
+
+			exChallengeClearMap := make(map[int64]int64, 10)
+			for _, v := range exChallengeProgress {
+				exChallengeClearMap[v.Exid] = v.Clear
+			}
+
+			for i := range 10 {
+				if exChallengeClearMapTotal[int64(i)] == -1 || exChallengeClearMap[int64(i)] < exChallengeClearMapTotal[int64(i)] {
+					exChallengeClearMapTotal[int64(i)] = exChallengeClearMap[int64(i)]
+				}
+			}
+		}
+
+		for i := range 10 {
+			if exChallengeClearMapTotal[int64(i)] != 1 {
+				minExChallenge = i
+				break
+			}
+		}
+	}
+
+	if minExChallenge+1 < len(exdatas) {
+		return exdatas[:minExChallenge+1], nil
+	}
+
+	return exdatas, nil
+}
+
+func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (any, error) {
 	// IR #10 course list
 	// ref: https://plaza.rakuten.co.jp/kisekiyuki/diary/200401220000/
 	// Not sure how accurate this really is but it's better than blank courses in-game
@@ -461,6 +520,18 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 
 	if err := utils.UnserializeEtreeElement(elm.Element, &request); err != nil {
 		panic(err)
+	}
+
+	cardIds := []string{}
+	for _, player := range request.Players {
+		if player.CardId != "" {
+			cardIds = append(cardIds, player.CardId)
+		}
+	}
+
+	exdatas, err := m.getExChallengeDatas(cardIds)
+	if err != nil {
+		return nil, err
 	}
 
 	players := make([]models.Response_GameData_GameTop_Player, len(request.Players))
@@ -526,6 +597,29 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 				skillPercs[seq].Values = strings.Join(skillPercsStrs[seq], "")
 			}
 
+			exChallengeProgress, err := m.db.GetExChallengeProgress(context.TODO(), db.GetExChallengeProgressParams{
+				GameType: m.gameType,
+				Cardid:   player.CardId,
+			})
+			if err != nil {
+				return nil, err
+			}
+
+			exChallengeProgressMap := make([]int64, 10)
+			exChallengeIsNewMap := []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+			for _, v := range exChallengeProgress {
+				exChallengeProgressMap[v.Exid] = v.Serial
+
+				if v.Seen == 1 {
+					exChallengeIsNewMap[v.Exid] = 0
+				}
+			}
+
+			isNewExChallenge := 0
+			if len(exdatas) > 0 {
+				isNewExChallenge = exChallengeIsNewMap[exdatas[len(exdatas)-1].ExId]
+			}
+
 			players[playerIdx] = models.Response_GameData_GameTop_Player{
 				Number:     player.Number,
 				Recovery:   int(playerData.Recovery),
@@ -537,7 +631,8 @@ func (m *moduleLocal) gamedata_gametop(elm internal_models.MethodXmlElement) (an
 					// If this is set to 1 then the player is forced into the EX challenge screen every game start.
 					// There should ideally be a table that tracks what EX challenges have been presented already,
 					// and and the EX challenge progress also needs to be tracked somewhere (checks in gameend?)
-					New: 0,
+					New:   isNewExChallenge,
+					Value: utils.GenerateListStringInt64(exChallengeProgressMap),
 				},
 
 				Ir: models.Response_GameData_GameTop_Player_IR{
@@ -598,6 +693,19 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 		}
 	}
 
+	// Hacky shit, I don't want to store the ex challenge settings in a table so just get the before and after ex challenge data lists to get the proper vacancy count for the response
+	cardIds := []string{}
+	for _, player := range request.Players {
+		if player.CardId != "" {
+			cardIds = append(cardIds, player.CardId)
+		}
+	}
+
+	exdatasBefore, err := m.getExChallengeDatas(cardIds)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, player := range request.Players {
 		for _, stage := range player.Play.Stages {
 			m.db.SaveScore(context.TODO(), db.SaveScoreParams{
@@ -614,6 +722,30 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 			})
 		}
 
+		if player.Ex != nil {
+			err := m.db.UpsertExChallenge(context.TODO(), db.UpsertExChallengeParams{
+				GameType: m.gameType,
+				Cardid:   player.CardId,
+				Exid:     int64(player.Ex.ExId),
+				Seen:     int64(player.Ex.Seen),
+				Clear:    int64(player.Ex.Clear),
+			})
+			if err != nil {
+				return nil, err
+			}
+
+			if player.Ex.Clear == 1 {
+				err := m.db.AwardSerialForExChallenge(context.TODO(), db.AwardSerialForExChallengeParams{
+					GameType: m.gameType,
+					Cardid:   player.CardId,
+					Exid:     int64(player.Ex.ExId),
+				})
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+
 		if player.CardId != "" {
 			m.db.RecalculateTotalSkillPointsForCardId(context.TODO(), db.RecalculateTotalSkillPointsForCardIdParams{
 				GameType: m.gameType,
@@ -628,7 +760,7 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 		shopName = string([]rune(shopName)[:16])
 	}
 
-	err := m.db.UpdateShopPoints(context.TODO(), db.UpdateShopPointsParams{
+	err = m.db.UpdateShopPoints(context.TODO(), db.UpdateShopPointsParams{
 		GameType: m.gameType,
 		Sid:      request.Id.MachineSerialId,
 		Pref:     int64(request.ShopRank.Pref),
@@ -642,6 +774,10 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 	// The responses should be generated after all of the score re-ratings are done in case there's more than 1 player
 	playerResponses := []models.Response_GameData_GameEnd_Player{}
 	for _, player := range request.Players {
+		if player.CardId != "" {
+			cardIds = append(cardIds, player.CardId)
+		}
+
 		playerStageResponses := []models.Response_GameData_GameEnd_Player_Stage{}
 
 		for _, stage := range player.Play.Stages {
@@ -725,13 +861,44 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 			playerSkill += 120000
 		}
 
+		exSerial := 0
+
+		if player.CardId != "" {
+			exSerial_, err := m.db.GetExChallengeSerial(context.TODO(), db.GetExChallengeSerialParams{
+				GameType: m.gameType,
+				Cardid:   player.CardId,
+				Exid:     int64(player.Ex.ExId),
+			})
+			if err != nil && err != sql.ErrNoRows {
+				return nil, err
+			}
+
+			exSerial = int(exSerial_)
+		}
+
 		playerResponses = append(playerResponses, models.Response_GameData_GameEnd_Player{
 			Number:       player.Number,
 			Skill:        int(playerSkill),
 			SkillOrder:   int(playerRank),
 			SkillOrderNr: int(playerCount),
 			Stages:       playerStageResponses,
+			Ex: models.Response_GameData_GameEnd_ExData_Ex{
+				Serial: exSerial,
+			},
 		})
+	}
+
+	exdatasAfter, err := m.getExChallengeDatas(cardIds)
+	if err != nil {
+		return nil, err
+	}
+
+	currentVacancyCount := 0
+	for _, v := range exdatasAfter {
+		if v.ExId == exdatasBefore[len(exdatasBefore)-1].ExId {
+			currentVacancyCount = v.Vacant
+			break
+		}
 	}
 
 	return &models.Response_GameData_GameEnd{
@@ -743,6 +910,10 @@ func (m *moduleLocal) gamedata_gameend(elm internal_models.MethodXmlElement) (an
 		},
 
 		Players: playerResponses,
+
+		ExData: models.Response_GameData_GameEnd_ExData{
+			Vacant: currentVacancyCount,
+		},
 	}, nil
 }
 

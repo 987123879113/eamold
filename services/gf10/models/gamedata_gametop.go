@@ -59,7 +59,8 @@ type Response_GameData_GameTop_Player struct {
 }
 
 type Response_GameData_GameTop_Player_Ex struct {
-	New int `xml:"new,attr"`
+	New   int    `xml:"new,attr"`
+	Value string `xml:",innerxml"`
 }
 
 type Response_GameData_GameTop_Player_IR struct {
